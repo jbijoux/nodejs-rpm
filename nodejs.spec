@@ -34,14 +34,7 @@ BuildRequires: zlib-devel
 BuildRequires: gzip
 BuildRequires: python
 
-%{?el5:BuildRequires: python27}
-%{?el5:BuildRequires: redhat-rpm-config}
 
-Patch0: node-js.centos5.configure.patch
-Patch1: node-js.centos5.gyp.patch
-Patch2: node-js.centos5.icu.patch
-Patch3: node-js.v8_inspector.gyp.patch
-Patch4: node-js.node.gyp-python27.patch
 
 %description
 Node.js is a server-side JavaScript environment that uses an asynchronous event-driven model.
@@ -80,21 +73,11 @@ Node.js is a server-side JavaScript environment that uses an asynchronous event-
 This allows Node.js to get excellent performance based on the architectures of many Internet applications.
 
 %prep
-rm -rf $RPM_SOURCE_DIR/%{_base}-v%{version}
-%setup -q -n %{_base}-v%{version}
+rm -rf $RPM_SOURCE_DIR/%{_base}-v%{version}-linux-x64
+%setup -q -n %{_base}-v%{version}-linux-x64
 
-%if 0%{?rhel} == 5
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%endif
 
 %build
-%if 0%{?rhel} == 5
-export PYTHON=python2.7
-%endif
 
 %define _node_arch %{nil}
 %ifarch x86_64
@@ -132,6 +115,7 @@ for file in CHANGELOG.md LICENSE README.md ; do
 done
 mv $RPM_BUILD_ROOT%{_node_original_docdir}/* $RPM_BUILD_ROOT%{_defaultdocdir}/%{_base}-v%{version}/
 rm -rf $RPM_BUILD_ROOT%{_node_original_docdir}
+
 mkdir -p $RPM_BUILD_ROOT%{_datarootdir}/%{_base}js
 mv $RPM_SOURCE_DIR/%{_base}-v%{version}-linux-%{_node_arch}.tar.gz $RPM_BUILD_ROOT%{_datarootdir}/%{_base}js/
 
@@ -203,7 +187,6 @@ rm -rf $RPM_SOURCE_DIR/%{_base}-v%{version}-linux-%{_node_arch}
 * Tue Oct 18 2016 Kazuhisa Hara <kazuhisya@gmail.com> - 6.8.1-1
 - updated to node.js version 6.8.1
 * Thu Oct 13 2016 Kazuhisa Hara <kazuhisya@gmail.com> - 6.8.0-1
-- updated to node.js version 6.8.0
 * Fri Sep 30 2016 Kazuhisa Hara <kazuhisya@gmail.com> - 6.7.0-1
 - updated to node.js version 6.7.0
 * Fri Sep 16 2016 Kazuhisa Hara <kazuhisya@gmail.com> - 6.6.0-1
@@ -229,6 +212,5 @@ rm -rf $RPM_SOURCE_DIR/%{_base}-v%{version}-linux-%{_node_arch}
 * Tue May 10 2016 Kazuhisa Hara <kazuhisya@gmail.com> - 6.1.0-2
 - dist tag is get in the way in accordance with the guidelines. #54
 * Fri May  6 2016 Kazuhisa Hara <kazuhisya@gmail.com> - 6.1.0-1
-- Updated to node.js version 6.1.0
-* Wed Apr 27 2016 Kazuhisa Hara <kazuhisya@gmail.com> - 6.0.0-1
-- Updated to node.js version 6.0.0
+
+
